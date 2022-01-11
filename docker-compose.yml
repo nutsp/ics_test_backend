@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.HotReload
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASS=${MYSQL_PASS}
+      - MYSQL_DB=${MYSQL_DB}
+    restart: always
+    volumes:
+      - ./:/app
+    ports:
+      - 3033:3000
+    networks:
+      - ics_test_net
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8088:8080
+    networks: 
+      - ics_test_net
+
+  db:
+    image: mysql:8.0
+    command: mysqld --sql_mode=""
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+    volumes:
+      - ./db:/var/lib/mysql
+    networks: 
+      - ics_test_net
+
+networks:
+  ics_test_net:
+    external:
+      name: ics_test_net
