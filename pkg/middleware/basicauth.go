@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
 )
@@ -34,4 +36,9 @@ func UserAuthReq() func(c *fiber.Ctx) error {
 	}
 
 	return basicauth.New(cfg)
+}
+
+func GetUserID(auth string) string {
+	bAuth := strings.Split(auth, " ")
+	return bAuth[1]
 }

@@ -19,7 +19,7 @@ func NewOrderUseCase(orderRepo order.Repository) order.UseCase {
 }
 
 func (u *orderUC) Create(ctx context.Context, order *models.Order) error {
-	span, ctx := apm.StartSpan(ctx, "orderRepo.Create", "custom")
+	span, ctx := apm.StartSpan(ctx, "orderUC.Create", "custom")
 	defer span.End()
 
 	for _, od := range order.OrderList {
@@ -34,8 +34,22 @@ func (u *orderUC) Create(ctx context.Context, order *models.Order) error {
 }
 
 func (u *orderUC) GetAll(ctx context.Context, filter *models.OrderFilter, query *utils.PaginationQuery) (*models.OrderList, error) {
-	span, ctx := apm.StartSpan(ctx, "orderRepo.GetAll", "custom")
+	span, ctx := apm.StartSpan(ctx, "orderUC.GetAll", "custom")
 	defer span.End()
 
 	return u.orderRepo.GetAll(ctx, filter, query)
+}
+
+func (u *orderUC) GetByUserID(ctx context.Context, filter *models.OrderFilter, query *utils.PaginationQuery) (*models.OrderList, error) {
+	span, ctx := apm.StartSpan(ctx, "orderUC.GetByUserID", "custom")
+	defer span.End()
+
+	return u.orderRepo.GetByUserID(ctx, filter, query)
+}
+
+func (u *orderUC) GetByID(ctx context.Context, id int) (*models.OrderBase, error) {
+	span, ctx := apm.StartSpan(ctx, "orderUC.GetByID", "custom")
+	defer span.End()
+
+	return u.orderRepo.GetByID(ctx, id)
 }

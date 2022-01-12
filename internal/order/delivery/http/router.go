@@ -10,7 +10,8 @@ import (
 func MapOrderRoute(r fiber.Router, h order.Handlers) {
 	r.Use(middleware.UserAuthReq())
 	r.Post("/", h.Create)
-	r.Get("/", h.GetAll)
+	r.Get("/", h.GetByUserID)
+	r.Get("/:id", h.GetByID)
 
 	r.Use(middleware.AdminAuthReq())
 	r.Get("/list", h.GetAll)
