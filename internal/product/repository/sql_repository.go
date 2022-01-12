@@ -63,6 +63,8 @@ func (r *productRepo) GetAll(ctx context.Context, filter *models.ProductFilter, 
 		LEFT JOIN category c ON c.id = p.category_id
 		LEFT JOIN size s ON s.id = p.size_id`
 
+	sliceCon = append(sliceCon, ` p.total_amount > 0 `)
+
 	if filter.Gender != "" {
 		sliceCon = append(sliceCon, ` UPPER(p.gender) = '`+strings.ToUpper(filter.Gender)+`' `)
 	}

@@ -4,6 +4,10 @@ import (
 	productHttp "app/internal/product/delivery/http"
 	productRepository "app/internal/product/repository"
 	productUseCase "app/internal/product/usecase"
+
+	orderHttp "app/internal/order/delivery/http"
+	orderRepository "app/internal/order/repository"
+	orderUseCase "app/internal/order/usecase"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -36,6 +40,11 @@ func (s *Server) MapHandlers(app *fiber.App) error {
 	productHttp.MapProductRoute(productGroup, productHandler)
 
 	// Orders
+	orderGroup := v1.Group("/order")
+	orderRepo := orderRepository.NewOrderRepository(s.db)
+	orderUC := orderUseCase.NewOrderUseCase(orderRepo)
+	orderHandler := orderHttp.NewOrderHandler(orderUC)
+	orderHttp.MapOrderRoute(orderGroup, orderHandler)
 
 	// Payments
 
