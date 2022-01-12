@@ -4,6 +4,7 @@ import (
 	"app/internal/models"
 	"app/internal/product"
 	"app/pkg/utils"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 	"go.elastic.co/apm"
@@ -21,6 +22,8 @@ func (h *productHandler) Create(c *fiber.Ctx) error {
 	span, ctx := apm.StartSpan(c.Context(), "productHandler.Create", "custom")
 	defer span.End()
 
+	userID := c.Get("Authorization")
+	log.Println(userID)
 	product := new(models.Product)
 	if err := c.BodyParser(product); err != nil {
 		return c.Status(400).JSON(&models.Response{
@@ -48,6 +51,9 @@ func (h *productHandler) Create(c *fiber.Ctx) error {
 func (h *productHandler) GetAll(c *fiber.Ctx) error {
 	span, ctx := apm.StartSpan(c.Context(), "productHandler.GetAll", "custom")
 	defer span.End()
+
+	userID := c.Get("Authorization")
+	log.Println(userID)
 
 	ft := new(models.ProductFilter)
 	pq := new(utils.PaginationQuery)
