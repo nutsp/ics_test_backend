@@ -8,11 +8,8 @@ import (
 )
 
 func MapProductRoute(r fiber.Router, h product.Handlers) {
+	r.Get("/", h.GetAll)
 
-	// Private
-	{
-		r.Use(middleware.AdminAuthReq())
-		r.Post("/", h.Create)
-		r.Get("/", h.GetAll)
-	}
+	r.Use(middleware.AdminAuthReq())
+	r.Post("/", h.Create)
 }

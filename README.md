@@ -12,3 +12,28 @@
 ## Usage
 
 _For more examples, please refer to the [Documentation](https://documenter.getpostman.com/view/3109803/UVXgNdEz)_
+
+### Env
+
+```
+MY_SERVER_HOST= `Host API (http://localhost:3000)`
+MYSQL_HOST= `Host Database (db)`
+MYSQL_PORT= `PORT Database (3306)`
+MYSQL_USER= `USER Database (root)`
+MYSQL_PASS= `PASS Database (Icstest1234)`
+MYSQL_DB= `Database Name (ics_test_db)`
+```
+
+### Build
+
+```
+docker build -t ics_test_backend:latest .
+```
+
+### Run
+
+#### Docker-compose:
+
+```
+docker-compose up -d
+```

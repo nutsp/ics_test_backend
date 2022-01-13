@@ -6,5 +6,5 @@ import (
 )
 
 type Repository interface {
-	Create(ctx context.Context, payment *models.Payment) error
+	Create(ctx context.Context, payment *models.Payment, statusID int) error
 }

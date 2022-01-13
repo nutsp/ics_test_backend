@@ -11,6 +11,8 @@ import (
 func main() {
 	cfg := &config.Config{}
 
+	cfg.Server.Host = os.Getenv("MY_SERVER_HOST")
+
 	cfg.MySQL.Host = os.Getenv("MYSQL_HOST")
 	cfg.MySQL.Port = os.Getenv("MYSQL_PORT")
 	cfg.MySQL.User = os.Getenv("MYSQL_USER")

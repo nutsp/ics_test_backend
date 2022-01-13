@@ -11,4 +11,6 @@ type UseCase interface {
 	GetAll(ctx context.Context, filter *models.OrderFilter, query *utils.PaginationQuery) (*models.OrderList, error)
 	GetByUserID(ctx context.Context, filter *models.OrderFilter, query *utils.PaginationQuery) (*models.OrderList, error)
 	GetByID(ctx context.Context, id int) (*models.OrderBase, error)
+	UpdateCancel(ctx context.Context, id int) error
+	UpdateConfirm(ctx context.Context, id int) error
 }

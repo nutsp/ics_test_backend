@@ -7,4 +7,6 @@ type Handlers interface {
 	GetAll(c *fiber.Ctx) error
 	GetByUserID(c *fiber.Ctx) error
 	GetByID(c *fiber.Ctx) error
+	UpdateCancel(c *fiber.Ctx) error
+	UpdateConfirm(c *fiber.Ctx) error
 }

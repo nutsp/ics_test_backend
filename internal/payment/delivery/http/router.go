@@ -8,4 +8,5 @@ import (
 
 func MapPaymentRoute(r fiber.Router, h payment.Handlers) {
 	r.Post("/", h.Create)
+	r.Post("/upload", h.UploadReceipt)
 }

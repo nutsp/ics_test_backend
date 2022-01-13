@@ -1,7 +1,12 @@
 package config
 
 type Config struct {
-	MySQL MySQLConfig
+	MySQL  MySQLConfig
+	Server ServerConfig
+}
+
+type ServerConfig struct {
+	Host string
 }
 
 type MySQLConfig struct {

@@ -23,8 +23,10 @@ func (u *orderUC) Create(ctx context.Context, order *models.Order) error {
 	defer span.End()
 
 	for _, od := range order.OrderList {
-		order.TotalPrice += od.PricePerUnit
+		order.TotalPrice += od.PricePerUnit * float64(od.Amount)
 	}
+
+	order.StatusID = 1 // Pending Payment
 
 	now := time.Now().Unix()
 	order.CreateAt = now
@@ -52,4 +54,22 @@ func (u *orderUC) GetByID(ctx context.Context, id int) (*models.OrderBase, error
 	defer span.End()
 
 	return u.orderRepo.GetByID(ctx, id)
+}
+
+func (u *orderUC) UpdateCancel(ctx context.Context, id int) error {
+	span, ctx := apm.StartSpan(ctx, "orderUC.UpdateCancel", "custom")
+	defer span.End()
+
+	statusID := 4
+
+	return u.orderRepo.UpdateCancel(ctx, id, statusID)
+}
+
+func (u *orderUC) UpdateConfirm(ctx context.Context, id int) error {
+	span, ctx := apm.StartSpan(ctx, "orderUC.UpdateConfirm", "custom")
+	defer span.End()
+
+	statusID := 3
+
+	return u.orderRepo.UpdateConfirm(ctx, id, statusID)
 }

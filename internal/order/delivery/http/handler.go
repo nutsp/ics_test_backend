@@ -121,3 +121,43 @@ func (h *orderHandler) GetByID(c *fiber.Ctx) error {
 		Data:    orderList,
 	})
 }
+
+func (h *orderHandler) UpdateCancel(c *fiber.Ctx) error {
+	span, ctx := apm.StartSpan(c.Context(), "orderHandler.UpdateCancel", "custom")
+	defer span.End()
+
+	id, _ := strconv.Atoi(c.Params("id"))
+	err := h.orderUC.UpdateCancel(ctx, id)
+	if err != nil {
+		return c.Status(400).JSON(&models.Response{
+			Status:  "FAIL",
+			Message: "update order fail",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(&models.Response{
+		Status:  "OK",
+		Message: "update order success",
+	})
+}
+
+func (h *orderHandler) UpdateConfirm(c *fiber.Ctx) error {
+	span, ctx := apm.StartSpan(c.Context(), "orderHandler.UpdateConfirm", "custom")
+	defer span.End()
+
+	id, _ := strconv.Atoi(c.Params("id"))
+	err := h.orderUC.UpdateConfirm(ctx, id)
+	if err != nil {
+		return c.Status(400).JSON(&models.Response{
+			Status:  "FAIL",
+			Message: "update order fail",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(&models.Response{
+		Status:  "OK",
+		Message: "update order success",
+	})
+}

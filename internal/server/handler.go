@@ -8,6 +8,10 @@ import (
 	orderHttp "app/internal/order/delivery/http"
 	orderRepository "app/internal/order/repository"
 	orderUseCase "app/internal/order/usecase"
+
+	paymentHttp "app/internal/payment/delivery/http"
+	paymentRepository "app/internal/payment/repository"
+	paymentUseCase "app/internal/payment/usecase"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -47,6 +51,10 @@ func (s *Server) MapHandlers(app *fiber.App) error {
 	orderHttp.MapOrderRoute(orderGroup, orderHandler)
 
 	// Payments
-
+	paymentGroup := v1.Group("/payment")
+	paymentRepo := paymentRepository.NewPaymentRepository(s.db)
+	paymentUC := paymentUseCase.NewPaymentUseCase(paymentRepo)
+	paymentHandler := paymentHttp.NewPaymentHandler(paymentUC, s.cfg)
+	paymentHttp.MapPaymentRoute(paymentGroup, paymentHandler)
 	return nil
 }

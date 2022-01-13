@@ -21,6 +21,25 @@ func NewProductRepository(db *sqlx.DB) product.Repository {
 	return &productRepo{db: db}
 }
 
+func (r *productRepo) checkProductInStock(ctx context.Context, product *models.Product) (bool, error) {
+	span, ctx := apm.StartSpan(ctx, "productRepo.checkProductInStock", "custom")
+	defer span.End()
+
+	queryCount := `SELECT COUNT(*) FROM product 
+		WHERE name = ? AND gender = ? AND category_id = ? AND size_id = ? AND price_per_unit = ?`
+	var totalCount int = 0
+	if err := r.db.GetContext(ctx, &totalCount, queryCount, product.Name, product.Gender,
+		product.CategoryID, product.SizeID, product.PricePerUnit); err != nil {
+		return false, err
+	}
+
+	if totalCount == 0 {
+		return false, nil
+	}
+
+	return true, nil
+}
+
 func (r *productRepo) Create(ctx context.Context, product *models.Product) error {
 	span, ctx := apm.StartSpan(ctx, "productRepo.Create", "custom")
 	defer span.End()
@@ -30,20 +49,41 @@ func (r *productRepo) Create(ctx context.Context, product *models.Product) error
 		return err
 	}
 
-	createProductStr := `INSERT INTO product (name, gender, category_id, size_id,
-		total_amount, price_per_unit, create_at, update_at)
-		VALUES (?,?,?,?,?,?,?,?)`
-	result, err := tx.ExecContext(ctx, createProductStr, product.Name, product.Gender, product.CategoryID,
-		product.SizeID, product.Amount, product.PricePerUnit, product.CreateAt, product.UpdateAt)
+	inStock, err := r.checkProductInStock(ctx, product)
 	if err != nil {
-		_ = tx.Rollback()
 		return err
 	}
-	product.ID, _ = result.LastInsertId()
 
-	if err := tx.Commit(); err != nil {
-		return err
+	if !inStock {
+		createProductStr := `INSERT INTO product (name, gender, category_id, size_id,
+			total_amount, price_per_unit, create_at, update_at)
+			VALUES (?,?,?,?,?,?,?,?)`
+		result, err := tx.ExecContext(ctx, createProductStr, product.Name, product.Gender, product.CategoryID,
+			product.SizeID, product.Amount, product.PricePerUnit, product.CreateAt, product.UpdateAt)
+		if err != nil {
+			_ = tx.Rollback()
+			return err
+		}
+		product.ID, _ = result.LastInsertId()
+
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+	} else {
+		updateProductStr := `UPDATE product SET total_amount = (total_amount + ?), update_at = ?
+			WHERE name = ? AND gender = ? AND category_id = ? AND size_id = ? AND price_per_unit = ?`
+
+		_, err := tx.ExecContext(ctx, updateProductStr, product.Amount, product.UpdateAt,
+			product.Name, product.Gender, product.CategoryID, product.SizeID, product.PricePerUnit)
+		if err != nil {
+			_ = tx.Rollback()
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 

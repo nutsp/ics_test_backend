@@ -6,7 +6,9 @@ import (
 	"app/pkg/utils"
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 	"go.elastic.co/apm"
@@ -20,6 +22,24 @@ func NewOrderRepository(db *sqlx.DB) order.Repository {
 	return &orderRepo{db: db}
 }
 
+func (r *orderRepo) checkProductInStock(ctx context.Context, productID, amount int64) (bool, error) {
+	span, ctx := apm.StartSpan(ctx, "orderRepo.checkProductInStock", "custom")
+	defer span.End()
+
+	queryCount := `SELECT COUNT(*) FROM product 
+		WHERE id = ? AND total_amount >= ?`
+	var totalCount int = 0
+	if err := r.db.GetContext(ctx, &totalCount, queryCount, productID, amount); err != nil {
+		return false, err
+	}
+
+	if totalCount == 0 {
+		return false, nil
+	}
+
+	return true, nil
+}
+
 func (r *orderRepo) Create(ctx context.Context, order *models.Order) error {
 	span, ctx := apm.StartSpan(ctx, "orderRepo.Create", "custom")
 	defer span.End()
@@ -29,9 +49,9 @@ func (r *orderRepo) Create(ctx context.Context, order *models.Order) error {
 		return err
 	}
 
-	createOrderStr := `INSERT INTO orders (user_id, total_price, address, status, create_at, update_at) 
+	createOrderStr := `INSERT INTO orders (user_id, total_price, address, status_id, create_at, update_at) 
 		VALUES (?,?,?,?,?,?)`
-	result, err := tx.ExecContext(ctx, createOrderStr, order.UserID, order.TotalPrice, order.Address, order.Status,
+	result, err := tx.ExecContext(ctx, createOrderStr, order.UserID, order.TotalPrice, order.Address, order.StatusID,
 		order.CreateAt, order.UpdateAt)
 	if err != nil {
 		_ = tx.Rollback()
@@ -42,10 +62,30 @@ func (r *orderRepo) Create(ctx context.Context, order *models.Order) error {
 	createOrderList := `INSERT INTO order_list (order_id, product_id, amount, price_per_unit)
 		VALUES (?,?,?,?)`
 	for _, od := range order.OrderList {
-		_, err := tx.ExecContext(ctx, createOrderList, orderID, od.ProductID, od.Amount, od.PricePerUnit)
+		inStock, err := r.checkProductInStock(ctx, od.ProductID, od.Amount)
 		if err != nil {
 			_ = tx.Rollback()
 			return err
+		}
+
+		if inStock {
+			_, err := tx.ExecContext(ctx, createOrderList, orderID, od.ProductID, od.Amount, od.PricePerUnit)
+			if err != nil {
+				_ = tx.Rollback()
+				return err
+			}
+
+			updateProductStr := `UPDATE product SET total_amount = (total_amount - ?), update_at = ?
+				WHERE id = ?`
+
+			_, err = tx.ExecContext(ctx, updateProductStr, od.Amount, order.CreateAt, od.ProductID)
+			if err != nil {
+				_ = tx.Rollback()
+				return err
+			}
+		} else {
+			_ = tx.Rollback()
+			return errors.New("not enough product")
 		}
 	}
 
@@ -62,9 +102,11 @@ func (r *orderRepo) GetAll(ctx context.Context, filter *models.OrderFilter, quer
 	var sliceCon []string
 	var queryCount, queryAll string
 
-	countOrderStr := `SELECT COUNT(*) FROM orders o`
-	orderListStr := `SELECT o.id, o.user_id, o.total_price, o.address, o.status, o.payment_id, o.create_at, o.update_at
-		FROM orders o`
+	countOrderStr := `SELECT COUNT(*) FROM orders o
+		LEFT JOIN order_status os ON o.status_id = os.id`
+	orderListStr := `SELECT o.id, o.user_id, o.total_price, o.address, o.status_id, os.status, o.payment_id, o.create_at, o.update_at
+		FROM orders o
+		LEFT JOIN order_status os ON o.status_id = os.id`
 
 	if filter.BeginDate != "" {
 		sliceCon = append(sliceCon, ` From_unixtime(o.create_at, '%d-%m-%Y') >= '`+filter.BeginDate+`' `)
@@ -75,7 +117,7 @@ func (r *orderRepo) GetAll(ctx context.Context, filter *models.OrderFilter, quer
 	}
 
 	if filter.Status != "" {
-		sliceCon = append(sliceCon, ` o.status  = '`+filter.Status+`' `)
+		sliceCon = append(sliceCon, ` os.status = '`+filter.Status+`' `)
 	}
 
 	condition := utils.ConcatCondition(sliceCon)
@@ -140,9 +182,11 @@ func (r *orderRepo) GetByUserID(ctx context.Context, filter *models.OrderFilter,
 	var sliceCon []string
 	var queryCount, queryAll string
 
-	countOrderStr := `SELECT COUNT(*) FROM orders o`
-	orderListStr := `SELECT o.id, o.user_id, o.total_price, o.address, o.status, o.payment_id, o.create_at, o.update_at
-		FROM orders o`
+	countOrderStr := `SELECT COUNT(*) FROM orders o
+		LEFT JOIN order_status os ON o.status_id = os.id`
+	orderListStr := `SELECT o.id, o.user_id, o.total_price, o.address, o.status_id, os.status, o.payment_id, o.create_at, o.update_at
+		FROM orders o
+		LEFT JOIN order_status os ON o.status_id = os.id`
 
 	sliceCon = append(sliceCon, ` o.user_id = '`+filter.UserID+`' `)
 	if filter.BeginDate != "" {
@@ -154,7 +198,7 @@ func (r *orderRepo) GetByUserID(ctx context.Context, filter *models.OrderFilter,
 	}
 
 	if filter.Status != "" {
-		sliceCon = append(sliceCon, ` o.status  = '`+filter.Status+`' `)
+		sliceCon = append(sliceCon, ` os.status  = '`+filter.Status+`' `)
 	}
 
 	condition := utils.ConcatCondition(sliceCon)
@@ -216,5 +260,74 @@ func (r *orderRepo) GetByID(ctx context.Context, id int) (*models.OrderBase, err
 	span, ctx := apm.StartSpan(ctx, "orderRepo.GetByID", "custom")
 	defer span.End()
 
-	return nil, nil
+	var order = new(models.OrderBase)
+	getOrderByID := `SELECT o.id, o.user_id, o.total_price, o.address, o.status_id, os.status, o.payment_id, o.create_at, o.update_at
+		FROM orders o
+		LEFT JOIN order_status os ON o.status_id = os.id
+		WHERE o.id = ?`
+	if err := r.db.QueryRowxContext(ctx, getOrderByID, id).StructScan(order); err != nil {
+		return nil, err
+	}
+
+	countOrderList := `SELECT COUNT(*) FROM order_list o WHERE o.order_id = ?`
+	var totalCount int
+	if err := r.db.GetContext(ctx, &totalCount, countOrderList, id); err != nil {
+		return nil, err
+	}
+
+	if totalCount == 0 {
+		return order, nil
+	}
+
+	getOrderList := `SELECT p.id, p.name, p.gender, p.category_id, c.category, p.size_id, s.size,
+		p.price_per_unit, o.amount
+		FROM order_list o
+		LEFT JOIN product p ON o.product_id = p.id
+		LEFT JOIN category c ON c.id = p.category_id
+		LEFT JOIN size s ON s.id = p.size_id
+		WHERE o.order_id = ?`
+	rows, err := r.db.QueryxContext(ctx, getOrderList, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var orderList = make([]*models.OrderDetailBase, 0, totalCount)
+	for rows.Next() {
+		var orderDetail models.OrderDetailBase
+
+		if err := rows.StructScan(&orderDetail); err != nil {
+			return nil, err
+		}
+		orderList = append(orderList, &orderDetail)
+	}
+
+	order.OrderList = orderList
+	return order, nil
+}
+
+func (r *orderRepo) UpdateCancel(ctx context.Context, id int, statusID int) error {
+	span, ctx := apm.StartSpan(ctx, "orderRepo.UpdateCancel", "custom")
+	defer span.End()
+
+	updateOrderStr := `UPDATE orders SET status_id = ?, update_at = ? WHERE id = ?`
+	_, err := r.db.ExecContext(ctx, updateOrderStr, statusID, time.Now().Unix(), id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *orderRepo) UpdateConfirm(ctx context.Context, id int, statusID int) error {
+	span, ctx := apm.StartSpan(ctx, "orderRepo.UpdateConfirm", "custom")
+	defer span.End()
+
+	updateOrderStr := `UPDATE orders SET status_id = ?, update_at = ? WHERE id = ?`
+	_, err := r.db.ExecContext(ctx, updateOrderStr, statusID, time.Now().Unix(), id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
