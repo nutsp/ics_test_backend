@@ -10,9 +10,6 @@
 * [Docker](https://www.docker.com/) - Docker
 
 ## Usage
-
-_For more examples, please refer to the [Documentation](https://documenter.getpostman.com/view/3109803/UVXgNdEz)_
-
 ### Env
 
 ```
@@ -37,3 +34,10 @@ docker build -t ics_test_backend:latest .
 ```
 docker-compose up -d
 ```
+
+API: _http://locahost:3000_
+
+Adminer For Manage Database: _http://localhost:8080_
+
+_For more examples, please refer to the [Documentation](https://documenter.getpostman.com/view/3109803/UVXgNdEz)_
+

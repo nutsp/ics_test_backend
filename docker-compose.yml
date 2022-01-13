@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.HotReload
+      dockerfile: Dockerfile
     environment:
       - MY_SERVER_HOST=${MY_SERVER_HOST}
       - MYSQL_HOST=${MYSQL_HOST}
@@ -15,7 +15,7 @@ services:
     volumes:
       - ./:/app
     ports:
-      - 3033:3000
+      - 3000:3000
     networks:
       - ics_test_net
 
@@ -23,7 +23,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8088:8080
+      - 8080:8080
     networks: 
       - ics_test_net
 
