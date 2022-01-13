@@ -1,0 +1,1313 @@
+{
+	"info": {
+		"_postman_id": "eeca9958-b2aa-4537-ad34-ec2f4c2b1f3f",
+		"name": "ICS_Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "เพิ่มรายการสินค้า [Admin]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ชุดเดรท",
+									"description": "ชื้อสินค้า",
+									"type": "default"
+								},
+								{
+									"key": "gender",
+									"value": "female",
+									"description": "เพศ",
+									"type": "default"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"description": "หมวดหมู่",
+									"type": "default"
+								},
+								{
+									"key": "size_id",
+									"value": "1",
+									"description": "ขนาด",
+									"type": "default"
+								},
+								{
+									"key": "amount",
+									"value": "15",
+									"description": "จำนวน",
+									"type": "default"
+								},
+								{
+									"key": "price_per_unit",
+									"value": "175",
+									"description": "ราคาต่อชิ้น",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "เพิ่มรายการสินค้า [Admin] (201)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "ชุดเดรท",
+											"description": "ชื้อสินค้า",
+											"type": "default"
+										},
+										{
+											"key": "gender",
+											"value": "female",
+											"description": "เพศ",
+											"type": "default"
+										},
+										{
+											"key": "category_id",
+											"value": "1",
+											"description": "หมวดหมู่",
+											"type": "default"
+										},
+										{
+											"key": "size_id",
+											"value": "1",
+											"description": "ขนาด",
+											"type": "default"
+										},
+										{
+											"key": "amount",
+											"value": "15",
+											"description": "จำนวน",
+											"type": "default"
+										},
+										{
+											"key": "price_per_unit",
+											"value": "175",
+											"description": "ราคาต่อชิ้น",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/v1/product",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"product"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:52:36 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "234"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"create product success\",\n    \"data\": {\n        \"id\": 12,\n        \"name\": \"ชุดเดรท\",\n        \"gender\": \"female\",\n        \"category_id\": 1,\n        \"size_id\": 1,\n        \"amount\": 15,\n        \"price_per_unit\": 175,\n        \"create_at\": 1642067556,\n        \"update_at\": 1642067556\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "แสดงรายการสินค้า [Guest]",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/product?page=1&limit=10&gender=&category&size=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page Index"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "จำนวนข้อมูล"
+								},
+								{
+									"key": "gender",
+									"value": "",
+									"description": "เพศ"
+								},
+								{
+									"key": "category",
+									"value": null,
+									"description": "หมวดหมู่"
+								},
+								{
+									"key": "size",
+									"value": "",
+									"description": "ขนาด"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "แสดงรายการสินค้า [Guest] (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/product?page=1&limit=10&gender=&category&size=",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"product"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page Index"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "จำนวนข้อมูล"
+										},
+										{
+											"key": "gender",
+											"value": "",
+											"description": "เพศ"
+										},
+										{
+											"key": "category",
+											"value": null,
+											"description": "หมวดหมู่"
+										},
+										{
+											"key": "size",
+											"value": "",
+											"description": "ขนาด"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:53:45 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "885"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"list product success\",\n    \"data\": {\n        \"total_count\": 4,\n        \"total_pages\": 1,\n        \"page\": 1,\n        \"limit\": 10,\n        \"has_more\": false,\n        \"products\": [\n            {\n                \"id\": 9,\n                \"name\": \"เสื้อฮาวาย\",\n                \"gender\": \"male\",\n                \"category\": \"Plain Color\",\n                \"size\": \"XS\",\n                \"total_amount\": 10,\n                \"price_per_unit\": 100,\n                \"create_at\": 1642067485,\n                \"update_at\": 1642067485\n            },\n            {\n                \"id\": 10,\n                \"name\": \"เสื้อฮาวาย\",\n                \"gender\": \"male\",\n                \"category\": \"Plain Color\",\n                \"size\": \"M\",\n                \"total_amount\": 10,\n                \"price_per_unit\": 150,\n                \"create_at\": 1642067508,\n                \"update_at\": 1642067508\n            },\n            {\n                \"id\": 11,\n                \"name\": \"ชุดเดรท\",\n                \"gender\": \"female\",\n                \"category\": \"Plain Color\",\n                \"size\": \"S\",\n                \"total_amount\": 15,\n                \"price_per_unit\": 175,\n                \"create_at\": 1642067544,\n                \"update_at\": 1642067544\n            },\n            {\n                \"id\": 12,\n                \"name\": \"ชุดเดรท\",\n                \"gender\": \"female\",\n                \"category\": \"Plain Color\",\n                \"size\": \"XS\",\n                \"total_amount\": 15,\n                \"price_per_unit\": 175,\n                \"create_at\": 1642067556,\n                \"update_at\": 1642067556\n            }\n        ]\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "สร้างรายการ Order [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": \"123 จ.ลำปาง\",\r\n    \"product_list\": [\r\n        {\r\n            \"product_id\": 9,\r\n            \"amount\": 2,\r\n            \"price_per_unit\": 100\r\n        },\r\n        {\r\n            \"product_id\": 11,\r\n            \"amount\": 1,\r\n            \"price_per_unit\": 175\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/order",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"order"
+							]
+						},
+						"description": "เพิ่มรายการ Order"
+					},
+					"response": [
+						{
+							"name": "สร้างรายการ Order [User] (201)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"address\": \"123 จ.ลำปาง\",\r\n    \"product_list\": [\r\n        {\r\n            \"product_id\": 9,\r\n            \"amount\": 2,\r\n            \"price_per_unit\": 100\r\n        },\r\n        {\r\n            \"product_id\": 11,\r\n            \"amount\": 1,\r\n            \"price_per_unit\": 175\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/order",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:56:57 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "298"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"create order success\",\n    \"data\": {\n        \"total_price\": 375,\n        \"address\": \"123 จ.ลำปาง\",\n        \"status_id\": 1,\n        \"product_list\": [\n            {\n                \"product_id\": 9,\n                \"amount\": 2,\n                \"price_per_unit\": 100\n            },\n            {\n                \"product_id\": 11,\n                \"amount\": 1,\n                \"price_per_unit\": 175\n            }\n        ],\n        \"create_at\": 1642067817,\n        \"update_at\": 1642067817\n    },\n    \"error\": \"\"\n}"
+						},
+						{
+							"name": "สร้างรายการ Order [User] (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"address\": \"123\",\r\n    \"product_list\": [\r\n        {\r\n            \"product_id\": 7,\r\n            \"amount\": 1,\r\n            \"price_per_unit\": 100\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/order",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:32:29 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "88"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"FAIL\",\n    \"message\": \"create order fail\",\n    \"data\": null,\n    \"error\": \"not enough product\"\n}"
+						}
+					]
+				},
+				{
+					"name": "แสดงรายการ Order [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/order/user/all?page=1&limit=10&begin_date=10-01-2022&end_date=13-01-2022&status=Pending Payment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"order",
+								"user",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page Index"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "จำนวนข้อมูล"
+								},
+								{
+									"key": "begin_date",
+									"value": "10-01-2022",
+									"description": "ช่วงวันที่เริ่มต้น (DD-MM-YYYY)"
+								},
+								{
+									"key": "end_date",
+									"value": "13-01-2022",
+									"description": "ช่วงวันที่สิ้นสุด (DD-MM-YYYY)"
+								},
+								{
+									"key": "status",
+									"value": "Pending Payment",
+									"description": "Pending Payment, Delivery, Succeed, Cancel"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "แสดงรายการ Order [User] (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/order/user/all?page=1&limit=10&begin_date=11-01-2022&end_date=13-01-2022",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order",
+										"user",
+										"all"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "begin_date",
+											"value": "11-01-2022"
+										},
+										{
+											"key": "end_date",
+											"value": "13-01-2022"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:33:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "312"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"list order success\",\n    \"data\": {\n        \"total_count\": 1,\n        \"total_pages\": 1,\n        \"page\": 1,\n        \"limit\": 10,\n        \"has_more\": false,\n        \"orders\": [\n            {\n                \"id\": 29,\n                \"total_price\": 100,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642066369,\n                \"update_at\": 1642066369\n            }\n        ]\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "แสดงรายการ Order [Admin]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/order?page=1&limit=10&begin_date=10-01-2022&end_date=13-01-2022&status=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"order"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page Index"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "จำนวนข้อมูล"
+								},
+								{
+									"key": "begin_date",
+									"value": "10-01-2022",
+									"description": "ช่วงวันที่เริ่มต้น (DD-MM-YYYY)"
+								},
+								{
+									"key": "end_date",
+									"value": "13-01-2022",
+									"description": "ช่วงวันที่สิ้นสุด (DD-MM-YYYY)"
+								},
+								{
+									"key": "status",
+									"value": "",
+									"description": "Pending Payment, Delivery, Succeed, Cancel"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "แสดงรายการ Order [Admin] (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/order?page=1&limit=10&begin_date=10-01-2022&end_date=13-01-2022",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "begin_date",
+											"value": "10-01-2022"
+										},
+										{
+											"key": "end_date",
+											"value": "13-01-2022"
+										},
+										{
+											"key": "status",
+											"value": "0",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:33:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1304"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"list order success\",\n    \"data\": {\n        \"total_count\": 7,\n        \"total_pages\": 1,\n        \"page\": 1,\n        \"limit\": 10,\n        \"has_more\": false,\n        \"orders\": [\n            {\n                \"id\": 16,\n                \"total_price\": 0,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642061636,\n                \"update_at\": 1642061636\n            },\n            {\n                \"id\": 17,\n                \"total_price\": 0,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642061700,\n                \"update_at\": 1642061700\n            },\n            {\n                \"id\": 18,\n                \"total_price\": 100,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642061723,\n                \"update_at\": 1642061723\n            },\n            {\n                \"id\": 19,\n                \"total_price\": 100,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642061733,\n                \"update_at\": 1642061733\n            },\n            {\n                \"id\": 20,\n                \"total_price\": 100,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642061736,\n                \"update_at\": 1642061736\n            },\n            {\n                \"id\": 25,\n                \"total_price\": 100,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642062027,\n                \"update_at\": 1642062027\n            },\n            {\n                \"id\": 29,\n                \"total_price\": 100,\n                \"address\": \"123\",\n                \"status_id\": 1,\n                \"status\": \"Pending Payment\",\n                \"payment_id\": 0,\n                \"product_list\": null,\n                \"create_at\": 1642066369,\n                \"update_at\": 1642066369\n            }\n        ]\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "แสดงรายการตาม Order ID [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/order/:id/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"order",
+								":id",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "31",
+									"description": "ID Order"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "แสดงรายการตาม Order ID [User] (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/order/:id/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order",
+										":id",
+										""
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "0",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "16"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:33:30 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "228"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"list order success\",\n    \"data\": {\n        \"id\": 16,\n        \"total_price\": 0,\n        \"address\": \"123\",\n        \"status_id\": 1,\n        \"status\": \"Pending Payment\",\n        \"payment_id\": 0,\n        \"product_list\": null,\n        \"create_at\": 1642061636,\n        \"update_at\": 1642061636\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Confirm รับสินค้า [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/order/confirm/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"order",
+								"confirm",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "31",
+									"description": "ID Order"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Confirm [User] (200)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/order/confirm/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order",
+										"confirm",
+										":id"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "0",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "ID Order"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:33:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"update order success\",\n    \"data\": null,\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "ยกเลิกคำสั่ง [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/order/cancel/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"order",
+								"cancel",
+								":id"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "ID Order"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Cancel [User] (200)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/order/cancel/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"order",
+										"cancel",
+										":id"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "0",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2",
+											"description": "ID Order"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:33:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"update order success\",\n    \"data\": null,\n    \"error\": \"\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Upload หลักฐานการชำระ [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "receipt",
+									"description": "ไฟล์",
+									"type": "file",
+									"src": "/C:/Users/sutad/Downloads/วันหยุด-2565.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/payment/upload",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"payment",
+								"upload"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Upload หลักฐานการชำระ [User] (200)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "receipt",
+											"description": "ไฟล์",
+											"type": "file",
+											"src": "/C:/Users/sutad/Downloads/วันหยุด-2565.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/v1/payment/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"payment",
+										"upload"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:23:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "101"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"\",\n    \"data\": {\n        \"path\": \"/storage/receipt/2022/01/13/1642065830.jpeg\"\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "สร้างรายการชำระเงิน [User]",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "order_id",
+									"value": "31",
+									"description": "หมายเลข Order",
+									"type": "default"
+								},
+								{
+									"key": "bank_id",
+									"value": "1",
+									"description": "ID บัญชีธนาคาร",
+									"type": "default"
+								},
+								{
+									"key": "price",
+									"value": "375",
+									"description": "จำนวนเงินที่ชำระ",
+									"type": "default"
+								},
+								{
+									"key": "receipt_path",
+									"value": "/storage/receipt/2022/01/13/1642067896.jpeg",
+									"description": "Path หลักฐานการชำระ",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/payment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"payment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "สร้างรายการชำระเงิน [User] (201)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "order_id",
+											"value": "2",
+											"description": "หมายเลข Order",
+											"type": "default"
+										},
+										{
+											"key": "bank_id",
+											"value": "1",
+											"description": "ID บัญชีธนาคาร",
+											"type": "default"
+										},
+										{
+											"key": "price",
+											"value": "100",
+											"description": "จำนวนเงินที่ชำระ",
+											"type": "default"
+										},
+										{
+											"key": "receipt_path",
+											"value": "/storage/receipt/2022/01/13/1642065830.jpeg",
+											"description": "Path หลักฐานการชำระ",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/v1/payment",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"payment"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 13 Jan 2022 09:24:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "191"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": ""
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"OK\",\n    \"message\": \"create payment success\",\n    \"data\": {\n        \"order_id\": 2,\n        \"bank_id\": 1,\n        \"price\": 100,\n        \"receipt_path\": \"/storage/receipt/2022/01/13/1642065830.jpeg\",\n        \"create_at\": 1642065864\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
